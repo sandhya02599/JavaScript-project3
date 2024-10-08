@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+            margin-top: 100px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 640px;
+            height: 50%;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+
+        button, input {
+            margin-right: 10px;
+        }
+
+        #progressBar {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <video id="videoPlayer" width="640" height="360" controls>
+            <source src="video/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="controls">
+            <button id="playPauseBtn">Play</button>
+            <input type="range" id="progressBar" value="0" max="100">
+            <span id="currentTime">0:00</span> / <span id="totalTime">0:00</span>
+            <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('videoPlayer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeElem = document.getElementById('currentTime');
+        const totalTimeElem = document.getElementById('totalTime');
+        const volumeControl = document.getElementById('volumeControl');
+
+        playPauseBtn.addEventListener('click', () => {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.textContent = 'Pause';
+            } else {
+                video.pause();
+                playPauseBtn.textContent = 'Play';
+            }
+        });
+
+        video.addEventListener('timeupdate', () => {
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.value = progress;
+            updateCurrentTime();
+        });
+
+        progressBar.addEventListener('input', () => {
+            const seekTime = (progressBar.value / 100) * video.duration;
+            video.currentTime = seekTime;
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            totalTimeElem.textContent = formatTime(video.duration);
+        });
+
+        function updateCurrentTime() {
+            currentTimeElem.textContent = formatTime(video.currentTime);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`; 
+        }
+
+        volumeControl.addEventListener('input', () => {
+            video.volume = volumeControl.value;
+        });
+    </script>
+</body>
+</html>

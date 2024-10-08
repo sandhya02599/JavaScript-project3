@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Sprint Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .math-problem {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+        .answer-input {
+            font-size: 1.2rem;
+            padding: 5px;
+            width: 80px;
+            text-align: center;
+        }
+        .controls {
+            margin-top: 20px;
+        }
+        .controls button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin: 10px;
+            cursor: pointer;
+            border: none;
+            background-color: #00bfff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .controls button:hover {
+            background-color: #008cff;
+        }
+        .scoreboard {
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        .timer {
+            font-size: 1.5rem;
+            color: #ff4500;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Math Sprint Game</h1>
+    <div class="timer">Time Left: <span id="time-left">30</span>s</div>
+    <div class="math-problem" id="math-problem"></div>
+    <input type="number" id="answer-input" class="answer-input" placeholder="Answer">
+    <div class="controls">
+        <button id="start-btn">Start</button>
+        <button id="submit-btn" disabled>Submit</button>
+    </div>
+    <div class="scoreboard">
+        Score: <span id="score">0</span>
+    </div>
+</div>
+
+<script>
+    const startBtn = document.getElementById('start-btn');
+    const submitBtn = document.getElementById('submit-btn');
+    const mathProblemEl = document.getElementById('math-problem');
+    const answerInput = document.getElementById('answer-input');
+    const timeLeftEl = document.getElementById('time-left');
+    const scoreEl = document.getElementById('score');
+
+    let timeLeft = 30;
+    let timerInterval;
+    let score = 0;
+    let correctAnswer;
+
+   
+    function generateMathProblem() {
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        correctAnswer = num1 + num2;  
+        mathProblemEl.textContent = `${num1} + ${num2}`;
+    }
+
+    
+    function startGame() {
+        score = 0;
+        scoreEl.textContent = score;
+        timeLeft = 30;
+        timeLeftEl.textContent = timeLeft;
+        answerInput.value = '';
+        answerInput.disabled = false;
+        submitBtn.disabled = false;
+        generateMathProblem();
+        timerInterval = setInterval(countdown, 1000);
+    }
+
+    
+    function countdown() {
+        timeLeft--;
+        timeLeftEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            endGame();
+        }
+    }
+
+    
+    function endGame() {
+        mathProblemEl.textContent = 'Game Over!';
+        answerInput.disabled = true;
+        submitBtn.disabled = true;
+        startBtn.disabled = false;
+    }
+
+   
+    function submitAnswer() {
+        const userAnswer = parseInt(answerInput.value);
+        if (userAnswer === correctAnswer) {
+            score++;
+            scoreEl.textContent = score;
+            generateMathProblem();
+        }
+        answerInput.value = '';
+        answerInput.focus();
+    }
+
+   
+    startBtn.addEventListener('click', () => {
+        startBtn.disabled = true;
+        startGame();
+    });
+
+   
+    submitBtn.addEventListener('click', submitAnswer);
+
+    
+    answerInput.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+            submitAnswer();
+        }
+    });
+</script>
+
+</body>
+</html>

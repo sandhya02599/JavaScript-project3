@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joke Teller</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f4f9;
+      margin: 0;
+    }
+  
+    .container { 
+      text-align: center;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  
+    h1 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+  
+    .joke-container {
+      margin: 1rem 0;
+    }
+  
+    #joke { 
+      font-size: 1.5rem;
+      color: #555;
+    }
+  
+    button {
+      background-color: #28a745;
+      color: white;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container"> 
+    <h1>Joke Teller</h1>
+    <div class="joke-container"> 
+      <p id="joke">Press the button to hear a joke!</p> 
+    </div>
+    <button id="jokeBtn">Tell Me A Joke</button> 
+  </div>
+
+  <script>
+    const jokeBtn = document.getElementById('jokeBtn'); 
+    const jokeText = document.getElementById('joke'); 
+    const jokes = [ 
+        "Why did the math book look sad? Because it had too many problems!",
+        "I told my computer I needed a break, and now it won’t stop sending me Kit Kat ads!",
+        "Why did the bicycle fall over? Because it was two-tired!",
+        "What do you call cheese that isn't yours? Nacho cheese!",
+        "Why don't programmers like nature? It has too many bugs!"
+    ];
+
+    jokeBtn.addEventListener('click', () => { 
+      const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+      jokeText.textContent = randomJoke;
+    });
+  </script>
+</body>
+</html>
